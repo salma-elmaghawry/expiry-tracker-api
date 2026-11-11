@@ -3,6 +3,15 @@
 GET {{ExpiryTracker.Api_HostAddress}}/openapi/v1.json
 Accept: application/json
 
+### All batches (closest expiry first)
+GET {{ExpiryTracker.Api_HostAddress}}/api/batches
+
+### Only Active batches
+GET {{ExpiryTracker.Api_HostAddress}}/api/batches?status=Active
+
+### Invalid status: should return 400
+GET {{ExpiryTracker.Api_HostAddress}}/api/batches?status=Expired
+
 ###
 
 ### Add a batch (valid)
@@ -29,6 +38,32 @@ Content-Type: application/json
   "costPricePiasters": 3000,
   "unitPricePiasters": -5,
   "expiryDate": "2026-11-15"
+}
+
+### Discount batch 1 (milk) to 28 EGP
+PATCH {{ExpiryTracker.Api_HostAddress}}/api/batches/1/action
+Content-Type: application/json
+
+{
+  "action": "Discount",
+  "discountPricePiasters": 2800
+}
+
+### Sell batch 1
+PATCH {{ExpiryTracker.Api_HostAddress}}/api/batches/1/action
+Content-Type: application/json
+
+{
+  "action": "Sell"
+}
+
+### Waste batch 2 (bread) because it expired
+PATCH {{ExpiryTracker.Api_HostAddress}}/api/batches/2/action
+Content-Type: application/json
+
+{
+  "action": "Waste",
+  "wasteReason": "Expired"
 }
 
 ###
