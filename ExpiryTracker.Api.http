@@ -66,4 +66,7 @@ Content-Type: application/json
   "wasteReason": "Expired"
 }
 
+### Dashboard: expired / within 3 days / within 4 to 7 days
+GET {{ExpiryTracker.Api_HostAddress}}/api/dashboard
+
 ###

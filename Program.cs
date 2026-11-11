@@ -13,6 +13,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("Default")));
 
 builder.Services.AddScoped<BatchService>();
+builder.Services.AddScoped<DashboardService>();
 
 builder.Services.ConfigureHttpJsonOptions(options =>
 {
@@ -32,5 +33,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.MapBatchEndpoints();
+app.MapDashboardEndpoints();
 
 app.Run();
