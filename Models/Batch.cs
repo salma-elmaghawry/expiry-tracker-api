@@ -12,7 +12,8 @@ public class Batch
     public int Quantity { get; set; }
 
     // Money is stored in piasters (1 EGP = 100 piasters). 35.50 EGP => 3550
-    public long UnitPricePiasters { get; set; }
+    public long CostPricePiasters { get; set; } // what the store paid the supplier (losses use this)
+    public long UnitPricePiasters { get; set; } // what the customer pays
     public long? DiscountPricePiasters { get; set; }
 
     public DateOnly ExpiryDate { get; set; }
