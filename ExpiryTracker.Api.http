@@ -4,3 +4,31 @@ GET {{ExpiryTracker.Api_HostAddress}}/openapi/v1.json
 Accept: application/json
 
 ###
+
+### Add a batch (valid)
+POST {{ExpiryTracker.Api_HostAddress}}/api/batches
+Content-Type: application/json
+
+{
+  "productName": "Juhayna Milk 1L",
+  "category": "Dairy",
+  "quantity": 24,
+  "costPricePiasters": 3000,
+  "unitPricePiasters": 3500,
+  "expiryDate": "2026-11-15"
+}
+
+### Add a batch (invalid: should return 400 with errors)
+POST {{ExpiryTracker.Api_HostAddress}}/api/batches
+Content-Type: application/json
+
+{
+  "productName": "",
+  "category": "Dairy",
+  "quantity": 0,
+  "costPricePiasters": 3000,
+  "unitPricePiasters": -5,
+  "expiryDate": "2026-11-15"
+}
+
+###
