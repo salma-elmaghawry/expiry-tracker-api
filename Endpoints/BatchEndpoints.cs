@@ -16,13 +16,15 @@ public static class BatchEndpoints
         group.MapPatch("/{id:int}/action", ApplyAction);
     }
 
-    // GET /api/batches               => all
-    // GET /api/batches?status=Active => only Active
+    // GET /api/batches                     => all
+    // GET /api/batches?status=Active        => only Active
+    // GET /api/batches?bucket=Within3Days   => what the dashboard card counted
     private static async Task<Ok<List<BatchResponse>>> GetBatches(
         BatchStatus? status,
+        ExpiryBucket? bucket,
         BatchService service)
     {
-        var batches = await service.GetAllAsync(status);
+        var batches = await service.GetAllAsync(status, bucket);
         return TypedResults.Ok(batches);
     }
 

@@ -7,8 +7,6 @@ namespace ExpiryTracker.Api.Services;
 
 public class DashboardService(AppDbContext db)
 {
-    private enum Bucket { Expired, Within3Days, Within4To7Days }
-
     public async Task<DashboardResponse> GetAsync()
     {
         // The server runs on the supermarket's own PC, so local time = Cairo time.
@@ -20,9 +18,9 @@ public class DashboardService(AppDbContext db)
         var groups = await db.Batches
             .Where(b => (b.Status == BatchStatus.Active || b.Status == BatchStatus.Discounted)
                         && b.ExpiryDate <= in7Days)
-            .GroupBy(b => b.ExpiryDate < today ? Bucket.Expired
-                        : b.ExpiryDate <= in3Days ? Bucket.Within3Days
-                        : Bucket.Within4To7Days)
+            .GroupBy(b => b.ExpiryDate < today ? ExpiryBucket.Expired
+                        : b.ExpiryDate <= in3Days ? ExpiryBucket.Within3Days
+                        : ExpiryBucket.Within4To7Days)
             .Select(g => new
             {
                 Bucket = g.Key,
@@ -33,7 +31,7 @@ public class DashboardService(AppDbContext db)
             .ToListAsync();
 
         // A bucket with no batches does not come back from SQL at all, so default it to zero.
-        DashboardBucket For(Bucket bucket)
+        DashboardBucket For(ExpiryBucket bucket)
         {
             var group = groups.FirstOrDefault(g => g.Bucket == bucket);
             return group is null
@@ -43,8 +41,8 @@ public class DashboardService(AppDbContext db)
 
         return new DashboardResponse(
             today,
-            For(Bucket.Expired),
-            For(Bucket.Within3Days),
-            For(Bucket.Within4To7Days));
+            For(ExpiryBucket.Expired),
+            For(ExpiryBucket.Within3Days),
+            For(ExpiryBucket.Within4To7Days));
     }
 }

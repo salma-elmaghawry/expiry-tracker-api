@@ -7,13 +7,31 @@ namespace ExpiryTracker.Api.Services;
 
 public class BatchService(AppDbContext db)
 {
-    // status = null means "all batches"
-    public async Task<List<BatchResponse>> GetAllAsync(BatchStatus? status)
+    // status = null and bucket = null means "all batches"
+    public async Task<List<BatchResponse>> GetAllAsync(BatchStatus? status, ExpiryBucket? bucket)
     {
         IQueryable<Batch> query = db.Batches; // nothing runs yet, we are only building the query
 
         if (status is not null)
             query = query.Where(b => b.Status == status.Value);
+
+        if (bucket is not null)
+        {
+            // Same rules as the dashboard: open batches only, same date edges.
+            var today = DateOnly.FromDateTime(DateTime.Now);
+            var in3Days = today.AddDays(3);
+            var in7Days = today.AddDays(7);
+
+            query = query.Where(b => b.Status == BatchStatus.Active || b.Status == BatchStatus.Discounted);
+
+            query = bucket switch
+            {
+                ExpiryBucket.Expired => query.Where(b => b.ExpiryDate < today),
+                ExpiryBucket.Within3Days => query.Where(b => b.ExpiryDate >= today && b.ExpiryDate <= in3Days),
+                ExpiryBucket.Within4To7Days => query.Where(b => b.ExpiryDate > in3Days && b.ExpiryDate <= in7Days),
+                _ => query
+            };
+        }
 
         return await query
             .OrderBy(b => b.ExpiryDate) // closest to expiry first

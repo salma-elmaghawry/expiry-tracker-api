@@ -9,6 +9,9 @@ GET {{ExpiryTracker.Api_HostAddress}}/api/batches
 ### Only Active batches
 GET {{ExpiryTracker.Api_HostAddress}}/api/batches?status=Active
 
+### Batches behind a dashboard card (Expired, Within3Days, Within4To7Days)
+GET {{ExpiryTracker.Api_HostAddress}}/api/batches?bucket=Within3Days
+
 ### Invalid status: should return 400
 GET {{ExpiryTracker.Api_HostAddress}}/api/batches?status=Expired
 
@@ -68,5 +71,14 @@ Content-Type: application/json
 
 ### Dashboard: expired / within 3 days / within 4 to 7 days
 GET {{ExpiryTracker.Api_HostAddress}}/api/dashboard
+
+### Losses report for a month (waste by category, biggest loss first)
+GET {{ExpiryTracker.Api_HostAddress}}/api/reports/losses?month=2026-11
+
+### Losses report for the current month
+GET {{ExpiryTracker.Api_HostAddress}}/api/reports/losses
+
+### Demo seed: DELETES all batches, then adds realistic demo data (Development only)
+POST {{ExpiryTracker.Api_HostAddress}}/api/demo/seed
 
 ###

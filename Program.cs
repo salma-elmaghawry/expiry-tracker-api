@@ -14,6 +14,19 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddScoped<BatchService>();
 builder.Services.AddScoped<DashboardService>();
+builder.Services.AddScoped<ReportService>();
+builder.Services.AddScoped<DemoSeedService>();
+
+// Flutter Web runs in the browser on another port (http://localhost:xxxxx),
+// so the browser asks the API first: "may this page call you?". CORS is the answer.
+// Only pages served from this same computer are allowed.
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy => policy
+        .SetIsOriginAllowed(origin => Uri.TryCreate(origin, UriKind.Absolute, out var uri) && uri.IsLoopback)
+        .AllowAnyHeader()
+        .AllowAnyMethod());
+});
 
 builder.Services.ConfigureHttpJsonOptions(options =>
 {
@@ -26,13 +39,19 @@ builder.Services.ConfigureHttpJsonOptions(options =>
 
 var app = builder.Build();
 
+app.UseCors();
+
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
     app.MapScalarApiReference(); // test UI at /scalar
+
+    // Deletes all data, so it only exists in Development. In the real supermarket this URL is a 404.
+    app.MapDemoEndpoints();
 }
 
 app.MapBatchEndpoints();
 app.MapDashboardEndpoints();
+app.MapReportEndpoints();
 
 app.Run();
