@@ -9,6 +9,7 @@ import 'package:expiry_tracker/features/batches/presentation/models/batch_filter
 import 'package:expiry_tracker/features/batches/presentation/screens/batches_screen.dart';
 import 'package:expiry_tracker/features/dashboard/presentation/screens/dashboard_screen.dart';
 import 'package:expiry_tracker/features/reports/presentation/screens/reports_screen.dart';
+import 'package:expiry_tracker/features/scanner/presentation/screens/scanner_screen.dart';
 import 'package:expiry_tracker/features/settings/presentation/screens/settings_screen.dart';
 import 'package:expiry_tracker/features/splash/presentation/screens/splash_screen.dart';
 import 'package:go_router/go_router.dart';
@@ -22,6 +23,11 @@ class AppRouter {
       GoRoute(
         path: Routes.splash,
         builder: (context, state) => const SplashScreen(),
+      ),
+      // Outside the shell, so the camera covers the whole screen (no bottom bar).
+      GoRoute(
+        path: Routes.scan,
+        builder: (context, state) => const ScannerScreen(),
       ),
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) =>

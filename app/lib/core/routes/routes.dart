@@ -9,6 +9,7 @@ class Routes {
   static const String dashboard = '/dashboard';
   static const String batches = '/batches';
   static const String addBatch = '/batches/new';
+  static const String scan = '/scan';
   static const String reports = '/reports';
   static const String settings = '/settings';
 

@@ -72,6 +72,13 @@ presentation  ──►  domain  ◄──  data
 - `from=dashboard` shows the "From Dashboard" banner with the count and value at risk.
 - Tapping an Active or Discounted batch opens one bottom sheet that moves between steps: chooser, Sell, Discount, Waste, and the "already sold or wasted" step when the API answers 409.
 
+## Barcode scanner
+
+- `mobile_scanner` shows the camera and reads barcodes with Google ML Kit, on the phone, without internet.
+- `ScannerScreen` lives at `/scan`, outside the shell, so it covers the bottom bar. Open it with `await context.push<String>(Routes.scan)`: it returns the barcode, `ScannerScreen.enterManually` when staff tap "Enter manually", or `null` on Back.
+- The `CAMERA` permission is declared in `AndroidManifest.xml`; the package asks for it the first time the scanner opens. If staff deny it, the screen shows a message with "Try again".
+- Phone only. On web the scan button is hidden and the barcode field is autofocused, because a USB scanner types the code like a keyboard.
+
 ## Talking to the API
 
 - `ApiConfig.baseUrl` decides where requests go, and `DioClient` reads it on every request, so changing the server address takes effect without restarting.

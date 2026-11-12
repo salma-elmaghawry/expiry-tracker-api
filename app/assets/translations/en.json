@@ -163,5 +163,25 @@
             "discount": "Discount applied to {}",
             "waste": "{} recorded as waste"
         }
+    },
+    "add_batch": {
+        "barcode": "Barcode",
+        "optional": "(optional)",
+        "barcode_hint": "Scan or type the barcode",
+        "scan": "Scan barcode",
+        "more_fields": "Name, category, quantity, prices and expiry date come in the next step."
+    },
+    "scanner": {
+        "title": "Scan barcode",
+        "hint": "Point the camera at the barcode",
+        "hint_sub": "It scans automatically. Turn on the torch in dark aisles.",
+        "torch_on": "Turn on torch",
+        "torch_off": "Turn off torch",
+        "enter_manually": "Enter manually",
+        "denied_title": "Camera access is off",
+        "denied_body": "Allow the camera to scan barcodes. If no popup appears, turn it on in the phone's Settings › Apps › Expiry Tracker › Permissions.",
+        "error_title": "Can't start the camera",
+        "error_body": "Close other apps that use the camera, then try again.",
+        "try_again": "Try again"
     }
 }

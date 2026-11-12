@@ -36,6 +36,10 @@ class AppColors {
   static const Color textPrimaryDark = Color(0xFFE6EAE8);
   static const Color textSecondaryDark = Color(0xFF9DA8A3);
 
+  // Barcode scanner: always dark, in both themes, so the camera picture stands out.
+  static const Color scannerBackground = Color(0xFF1D2422);
+  static const Color scannerHint = Color(0xFFBFC8C4);
+
   static const Color error = Color(0xFFBA1A1A);
   static const Color errorDark = Color(0xFFFFB4AB);
   static const Color onErrorDark = Color(0xFF690005);

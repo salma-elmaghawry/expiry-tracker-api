@@ -1,5 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Barcode scanner. Android shows the "Allow camera?" popup the first time the scanner opens. -->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <!-- The app still installs on a device without a camera: staff can type the barcode. -->
+    <uses-feature android:name="android.hardware.camera" android:required="false" />
     <application
         android:label="Expiry Tracker"
         android:usesCleartextTraffic="true"
