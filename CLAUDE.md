@@ -3,7 +3,7 @@
 ## Project
 Standalone expiry & loss tracking app for medium Egyptian supermarkets.
 Backend: ASP.NET Core Minimal APIs (.NET 11) + EF Core + SQLite. Runs locally only.
-Frontend (later): Flutter + Cubit.
+Frontend: Flutter in app/ (web + Android): go_router, Cubit, dartz, Clean Architecture. See app/docs/architecture.md.
 
 ## Structure
 Models/ (entities), Data/ (AppDbContext), Dtos/, Services/ (business logic), Endpoints/ (route groups)

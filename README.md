@@ -51,6 +51,18 @@ curl -X POST http://localhost:5291/api/demo/seed
 
 This **deletes all batches** and inserts 21 realistic demo batches. All dates are relative to today, so the dashboard and reports always have data in every state. The endpoint exists only in the `Development` environment.
 
+## Flutter app
+
+```bash
+cd app
+cp .env.example .env      # put the Wi-Fi IP of the PC that runs the API
+flutter pub get
+flutter run -d chrome     # web
+flutter run               # Android phone connected over USB
+```
+
+Architecture notes: [app/docs/architecture.md](app/docs/architecture.md).
+
 ## API
 
 | Method | Route | Purpose |

@@ -493,3 +493,7 @@ $RECYCLE.BIN/
 
 # macOS
 .DS_Store
+
+# Flutter client (app/) has its own .gitignore for its build output.
+# The [Dd]ebug/ rule above is meant for .NET, so let the Android debug manifest through.
+!app/android/app/src/debug/

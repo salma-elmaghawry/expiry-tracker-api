@@ -4,6 +4,8 @@
     <TargetFramework>net11.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <!-- The Flutter client lives in app/. Keep its files out of the .NET build. -->
+    <DefaultItemExcludes>$(DefaultItemExcludes);app/**</DefaultItemExcludes>
   </PropertyGroup>
 
   <ItemGroup>

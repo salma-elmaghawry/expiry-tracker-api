@@ -1,0 +1,167 @@
+{
+    "app_name": "Expiry Tracker",
+    "app_tagline": "Sell it before it expires",
+    "common": {
+        "ok": "OK",
+        "cancel": "Cancel",
+        "retry": "Retry",
+        "save": "Save",
+        "loading": "Loading...",
+        "no_data": "No data available",
+        "close": "Close"
+    },
+    "nav": {
+        "menu": "Menu",
+        "dashboard": "Dashboard",
+        "batches": "Batches",
+        "reports": "Reports",
+        "settings": "Settings"
+    },
+    "placeholder": {
+        "coming_next": "This screen is coming in the next step"
+    },
+    "not_found": {
+        "title": "Page not found",
+        "message": "We couldn't find that page.",
+        "go_home": "Go to dashboard"
+    },
+    "settings": {
+        "title": "Settings",
+        "language": "Language",
+        "language_en": "English",
+        "language_ar": "العربية",
+        "theme": "Theme",
+        "theme_system": "System",
+        "theme_light": "Light",
+        "theme_dark": "Dark"
+    },
+    "validation": {
+        "required": "This field is required",
+        "invalid_price": "Enter a valid price",
+        "price_positive": "Price must be more than 0"
+    },
+    "errors": {
+        "network_error": "Can't reach the server. Check the Wi-Fi and the server address",
+        "server_error": "Server error. Please try again later",
+        "unexpected_error": "An unexpected error occurred",
+        "validation_error": "Some fields need fixing",
+        "not_found": "This item no longer exists",
+        "conflict": "This batch is already sold or wasted",
+        "something_wrong": "Something went wrong"
+    },
+    "money": {
+        "egp": "EGP"
+    },
+    "categories": {
+        "dairy": "Dairy",
+        "bakery": "Bakery",
+        "meatAndPoultry": "Meat & Poultry",
+        "fruitsAndVegetables": "Fruits & Vegetables",
+        "frozen": "Frozen",
+        "beverages": "Beverages",
+        "snacks": "Snacks",
+        "grocery": "Grocery",
+        "other": "Other"
+    },
+    "batch_status": {
+        "active": "Active",
+        "discounted": "Discounted",
+        "sold": "Sold",
+        "wasted": "Wasted"
+    },
+    "waste_reasons": {
+        "expired": "Expired",
+        "damaged": "Damaged",
+        "spoiled": "Spoiled",
+        "other": "Other"
+    },
+    "buckets": {
+        "expired": "Expired",
+        "within3Days": "Within 3 days",
+        "within4To7Days": "4 to 7 days"
+    },
+    "batches": {
+        "subtitle": "{} batches · closest expiry first",
+        "search": "Search",
+        "search_hint": "Name or barcode",
+        "clear": "Clear",
+        "filter_all": "All",
+        "add": "Add batch",
+        "qty": "Qty",
+        "expiry_line": "Expiry {}",
+        "reason_line": "Reason: {}",
+        "no_match": "No batches match these filters",
+        "clear_filters": "Clear filters",
+        "banner": {
+            "title": "From Dashboard · {}",
+            "at_risk": "{} · {} at risk"
+        },
+        "empty": {
+            "title": "No batches yet",
+            "body": "Add your first batch, or load demo data from Settings to try the app.",
+            "load_demo": "Load demo data"
+        },
+        "error": {
+            "title": "Can't reach the server",
+            "body": "Make sure the store PC is on and you're on the same Wi-Fi.",
+            "server": "Server: {} · Change in Settings"
+        },
+        "days": {
+            "today": "Expires today",
+            "left": {
+                "zero": "{} days left",
+                "one": "1 day left",
+                "two": "{} days left",
+                "few": "{} days left",
+                "many": "{} days left",
+                "other": "{} days left"
+            },
+            "expired_ago": {
+                "zero": "Expires today",
+                "one": "Expired yesterday",
+                "two": "Expired {} days ago",
+                "few": "Expired {} days ago",
+                "many": "Expired {} days ago",
+                "other": "Expired {} days ago"
+            }
+        },
+        "actions": {
+            "sell": "Sell",
+            "discount": "Discount",
+            "waste": "Waste"
+        },
+        "sheet": {
+            "name_qty": "{} · Qty {}",
+            "qty_expiry": "Qty {} · Expiry {}",
+            "sell_title": "Mark as sold?",
+            "quantity": "Quantity",
+            "selling_price": "Selling price",
+            "total": "Total",
+            "sell_confirm": "Confirm sale",
+            "discount_title": "Discount price",
+            "cost_price": "Cost price",
+            "new_price": "New price (EGP)",
+            "discount_confirm": "Apply discount",
+            "discount_required": "Enter the new price.",
+            "discount_too_high": "New price must be lower than {}.",
+            "percent_off": "{}% off",
+            "customers_save": "Customers save {} per item",
+            "below_cost": "Below cost price. You lose {} per item.",
+            "waste_title": "Waste this batch?",
+            "waste_subtitle": "This can't be undone.",
+            "reason": "Reason",
+            "reason_required": "Choose a reason",
+            "loss": "Loss at cost price",
+            "waste_confirm": "Waste batch",
+            "conflict_title": "Can't update this batch",
+            "conflict_body": "This batch is already sold or wasted.",
+            "conflict_hint": "A colleague may have updated it a moment ago. Refresh to see its latest status.",
+            "refresh_list": "Refresh list"
+        },
+        "done": {
+            "sell": "{} marked as sold",
+            "discount": "Discount applied to {}",
+            "waste": "{} recorded as waste"
+        }
+    }
+}
