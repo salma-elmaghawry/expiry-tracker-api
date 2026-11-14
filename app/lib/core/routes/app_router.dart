@@ -7,7 +7,9 @@ import 'package:expiry_tracker/core/widgets/not_found_screen.dart';
 import 'package:expiry_tracker/features/add_batch/presentation/screens/add_batch_screen.dart';
 import 'package:expiry_tracker/features/batches/presentation/models/batch_filters.dart';
 import 'package:expiry_tracker/features/batches/presentation/screens/batches_screen.dart';
+import 'package:expiry_tracker/features/cartons/presentation/screens/receive_carton_screen.dart';
 import 'package:expiry_tracker/features/dashboard/presentation/screens/dashboard_screen.dart';
+import 'package:expiry_tracker/features/factory_labels/presentation/screens/factory_labels_screen.dart';
 import 'package:expiry_tracker/features/reports/presentation/screens/reports_screen.dart';
 import 'package:expiry_tracker/features/scanner/presentation/screens/scanner_screen.dart';
 import 'package:expiry_tracker/features/settings/presentation/screens/settings_screen.dart';
@@ -28,6 +30,16 @@ class AppRouter {
       GoRoute(
         path: Routes.scan,
         builder: (context, state) => const ScannerScreen(),
+      ),
+      // Also full screen: camera + result sheet for receiving cartons.
+      GoRoute(
+        path: Routes.receiveCarton,
+        builder: (context, state) => const ReceiveCartonScreen(),
+      ),
+      // Factory portal: its own header, no store menu (the factory is not a store user).
+      GoRoute(
+        path: Routes.factoryLabels,
+        builder: (context, state) => const FactoryLabelsScreen(),
       ),
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) =>

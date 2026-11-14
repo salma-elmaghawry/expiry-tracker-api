@@ -12,6 +12,7 @@ import 'package:expiry_tracker/features/batches/presentation/cubit/batches_state
 import 'package:expiry_tracker/features/batches/presentation/models/batch_filters.dart';
 import 'package:expiry_tracker/features/batches/presentation/widgets/batches_list.dart';
 import 'package:expiry_tracker/features/batches/presentation/widgets/batches_skeleton.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -96,9 +97,12 @@ class BatchesBody extends StatelessWidget {
       body: 'batches.empty.body'.tr(),
       actions: [
         FilledButton.icon(
-          onPressed: () => context.push(Routes.addBatch),
-          icon: const Icon(Icons.add_rounded),
-          label: Text('batches.add'.tr()),
+          onPressed: () =>
+              context.push(kIsWeb ? Routes.addBatch : Routes.receiveCarton),
+          icon: Icon(
+            kIsWeb ? Icons.add_rounded : Icons.qr_code_scanner_rounded,
+          ),
+          label: Text((kIsWeb ? 'batches.add' : 'receive.button').tr()),
         ),
         TextButton(
           onPressed: () => context.go(Routes.settings),

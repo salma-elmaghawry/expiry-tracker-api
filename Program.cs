@@ -16,6 +16,10 @@ builder.Services.AddScoped<BatchService>();
 builder.Services.AddScoped<DashboardService>();
 builder.Services.AddScoped<ReportService>();
 builder.Services.AddScoped<DemoSeedService>();
+builder.Services.AddScoped<CartonService>();
+builder.Services.AddScoped<LabelService>();
+// One instance for the whole app: it only holds the signing key (like a get_it lazy singleton).
+builder.Services.AddSingleton<LabelSigner>();
 
 // Flutter Web runs in the browser on another port (http://localhost:xxxxx),
 // so the browser asks the API first: "may this page call you?". CORS is the answer.
@@ -53,5 +57,7 @@ if (app.Environment.IsDevelopment())
 app.MapBatchEndpoints();
 app.MapDashboardEndpoints();
 app.MapReportEndpoints();
+app.MapCartonEndpoints();
+app.MapLabelEndpoints();
 
 app.Run();

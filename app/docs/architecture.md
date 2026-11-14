@@ -79,6 +79,15 @@ presentation  ──►  domain  ◄──  data
 - The `CAMERA` permission is declared in `AndroidManifest.xml`; the package asks for it the first time the scanner opens. If staff deny it, the screen shows a message with "Try again".
 - Phone only. On web the scan button is hidden and the barcode field is autofocused, because a USB scanner types the code like a keyboard.
 
+## Receiving cartons (QR)
+
+- Factories print a QR label on every carton (one product, for example 12 boxes x 10 pieces). The app never parses it: it sends the raw text to `POST /api/cartons/scan/preview`, and the API, the only place that knows the label format, reads it.
+- `ReceiveCartonScreen` lives at `/receive/scan`, outside the shell. One screen holds the camera and the result sheet: on a read, `pause()` freezes the camera picture and the sheet opens; "Save and scan next" calls `start()` again without rebuilding the camera.
+- The camera reads QR codes only (`formats: [BarcodeFormat.qrCode]`), so the product barcodes printed on the carton are ignored. `DetectionSpeed.noDuplicates` stops it from reading the carton that was just saved again.
+- The preview tells the sheet what to show: valid (with the selling price field when `needsSellingPrice`), already received (`alreadyReceivedAt`), or not a label (400 with a `qrText` error). Saving calls `POST /api/cartons/scan`; a 409 there means someone received it meanwhile, so the cubit checks again and the sheet switches to "Already received".
+- The session panel counts cartons and pieces; Done shows them in a snackbar and closes the screen.
+- Phone only for now. On web, Batches keeps the manual Add batch form until the web receive panel (DReceive) is built.
+
 ## Talking to the API
 
 - `ApiConfig.baseUrl` decides where requests go, and `DioClient` reads it on every request, so changing the server address takes effect without restarting.

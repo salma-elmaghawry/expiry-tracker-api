@@ -10,6 +10,7 @@ import 'package:expiry_tracker/features/batches/presentation/widgets/batches_bod
 import 'package:expiry_tracker/features/batches/presentation/widgets/batches_filter_bar.dart';
 import 'package:expiry_tracker/features/batches/presentation/widgets/batches_header.dart';
 import 'package:expiry_tracker/features/batches/presentation/widgets/dashboard_filter_banner.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -137,10 +138,15 @@ class _BatchesViewState extends State<BatchesView> {
           if (state.fetchFailed && state.batches.isEmpty) {
             return const SizedBox.shrink();
           }
+          // Phones receive cartons by scanning their QR label.
+          // Web keeps the manual form until the web receive panel is built.
           return FloatingActionButton.extended(
-            onPressed: () => context.push(Routes.addBatch),
-            icon: const Icon(Icons.add_rounded),
-            label: Text('batches.add'.tr()),
+            onPressed: () =>
+                context.push(kIsWeb ? Routes.addBatch : Routes.receiveCarton),
+            icon: Icon(
+              kIsWeb ? Icons.add_rounded : Icons.qr_code_scanner_rounded,
+            ),
+            label: Text((kIsWeb ? 'batches.add' : 'receive.button').tr()),
           );
         },
       ),

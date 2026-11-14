@@ -10,8 +10,12 @@ class Routes {
   static const String batches = '/batches';
   static const String addBatch = '/batches/new';
   static const String scan = '/scan';
+  static const String receiveCarton = '/receive/scan';
   static const String reports = '/reports';
   static const String settings = '/settings';
+
+  // Factory portal (web): the factory creates and prints carton labels.
+  static const String factoryLabels = '/factory/labels';
 
   static const String statusParam = 'status';
   static const String urgencyParam = 'urgency';

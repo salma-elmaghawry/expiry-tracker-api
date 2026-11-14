@@ -39,6 +39,8 @@ class AppColors {
   // Barcode scanner: always dark, in both themes, so the camera picture stands out.
   static const Color scannerBackground = Color(0xFF1D2422);
   static const Color scannerHint = Color(0xFFBFC8C4);
+  // Scan frame when a QR is not a carton label.
+  static const Color scannerError = Color(0xFFFF897D);
 
   static const Color error = Color(0xFFBA1A1A);
   static const Color errorDark = Color(0xFFFFB4AB);

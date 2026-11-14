@@ -2,14 +2,21 @@ import 'package:flutter/material.dart';
 
 /// Darkens the camera everywhere except the scan [frame] and draws its four
 /// corner brackets. The corners turn green once a barcode is found.
+/// The barcode frame keeps the defaults; the carton QR frame is bigger.
 class ScannerOverlay extends StatelessWidget {
   final Rect frame;
   final Color cornerColor;
+  final double radius;
+  final double cornerLength;
+  final double cornerStroke;
 
   const ScannerOverlay({
     super.key,
     required this.frame,
     required this.cornerColor,
+    this.radius = 16,
+    this.cornerLength = 36,
+    this.cornerStroke = 4,
   });
 
   @override
@@ -18,21 +25,32 @@ class ScannerOverlay extends StatelessWidget {
     return IgnorePointer(
       child: CustomPaint(
         size: Size.infinite,
-        painter: _ScannerOverlayPainter(frame: frame, cornerColor: cornerColor),
+        painter: _ScannerOverlayPainter(
+          frame: frame,
+          cornerColor: cornerColor,
+          radius: radius,
+          cornerLength: cornerLength,
+          cornerStroke: cornerStroke,
+        ),
       ),
     );
   }
 }
 
 class _ScannerOverlayPainter extends CustomPainter {
-  static const double _radius = 16;
-  static const double _cornerLength = 36;
-  static const double _cornerStroke = 4;
-
   final Rect frame;
   final Color cornerColor;
+  final double radius;
+  final double cornerLength;
+  final double cornerStroke;
 
-  _ScannerOverlayPainter({required this.frame, required this.cornerColor});
+  _ScannerOverlayPainter({
+    required this.frame,
+    required this.cornerColor,
+    required this.radius,
+    required this.cornerLength,
+    required this.cornerStroke,
+  });
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -41,20 +59,18 @@ class _ScannerOverlayPainter extends CustomPainter {
     final dim = Path()
       ..fillType = PathFillType.evenOdd
       ..addRect(Offset.zero & size)
-      ..addRRect(
-        RRect.fromRectAndRadius(frame, const Radius.circular(_radius)),
-      );
+      ..addRRect(RRect.fromRectAndRadius(frame, Radius.circular(radius)));
     canvas.drawPath(dim, Paint()..color = Colors.black.withValues(alpha: 0.58));
 
     final cornerPaint = Paint()
       ..color = cornerColor
       ..style = PaintingStyle.stroke
-      ..strokeWidth = _cornerStroke
+      ..strokeWidth = cornerStroke
       ..strokeCap = StrokeCap.round;
 
-    const r = _radius;
-    const l = _cornerLength;
-    const arc = Radius.circular(_radius);
+    final r = radius;
+    final l = cornerLength;
+    final arc = Radius.circular(radius);
     final left = frame.left;
     final top = frame.top;
     final right = frame.right;
@@ -87,5 +103,9 @@ class _ScannerOverlayPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(_ScannerOverlayPainter oldDelegate) =>
-      oldDelegate.frame != frame || oldDelegate.cornerColor != cornerColor;
+      oldDelegate.frame != frame ||
+      oldDelegate.cornerColor != cornerColor ||
+      oldDelegate.radius != radius ||
+      oldDelegate.cornerLength != cornerLength ||
+      oldDelegate.cornerStroke != cornerStroke;
 }

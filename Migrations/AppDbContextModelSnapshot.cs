@@ -15,7 +15,7 @@ partial class AppDbContextModelSnapshot : ModelSnapshot
     // If you encounter a merge conflict in the line below, it means you need to
     // discard one of the migration branches and recreate its migrations on top of
     // the other branch. See https://aka.ms/efcore-docs-migrations-conflicts for more info.
-    public override string LastMigrationId => "20261111091911_InitialCreate";
+    public override string LastMigrationId => "20261112121744_AddLabelJobs";
 
     protected override void BuildModel(ModelBuilder modelBuilder)
     {
@@ -70,6 +70,210 @@ partial class AppDbContextModelSnapshot : ModelSnapshot
                 b.HasKey("Id");
 
                 b.ToTable("Batches");
+            });
+
+        modelBuilder.Entity("ExpiryTracker.Api.Models.Carton", b =>
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("INTEGER");
+
+                b.Property<int>("BoxesCount")
+                    .HasColumnType("INTEGER");
+
+                b.Property<string>("CartonCode")
+                    .IsRequired()
+                    .HasColumnType("TEXT");
+
+                b.Property<long>("CostPiasters")
+                    .HasColumnType("INTEGER");
+
+                b.Property<long?>("DiscountPricePiasters")
+                    .HasColumnType("INTEGER");
+
+                b.Property<DateOnly>("ExpiryDate")
+                    .HasColumnType("TEXT");
+
+                b.Property<string>("LotNumber")
+                    .IsRequired()
+                    .HasColumnType("TEXT");
+
+                b.Property<int>("PiecesPerBox")
+                    .HasColumnType("INTEGER");
+
+                b.Property<int>("ProductId")
+                    .HasColumnType("INTEGER");
+
+                b.Property<DateOnly>("ProductionDate")
+                    .HasColumnType("TEXT");
+
+                b.Property<int>("RemainingPieces")
+                    .HasColumnType("INTEGER");
+
+                b.Property<DateTime>("ScannedAt")
+                    .HasColumnType("TEXT");
+
+                b.Property<int>("TotalPieces")
+                    .HasColumnType("INTEGER");
+
+                b.HasKey("Id");
+
+                b.HasIndex("CartonCode")
+                    .IsUnique();
+
+                b.HasIndex("ProductId");
+
+                b.ToTable("Cartons");
+            });
+
+        modelBuilder.Entity("ExpiryTracker.Api.Models.LabelJob", b =>
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("INTEGER");
+
+                b.Property<string>("Barcode")
+                    .IsRequired()
+                    .HasColumnType("TEXT");
+
+                b.Property<int>("BoxesCount")
+                    .HasColumnType("INTEGER");
+
+                b.Property<int>("CartonCount")
+                    .HasColumnType("INTEGER");
+
+                b.Property<string>("Category")
+                    .IsRequired()
+                    .HasColumnType("TEXT");
+
+                b.Property<string>("CodePrefix")
+                    .IsRequired()
+                    .HasColumnType("TEXT");
+
+                b.Property<long>("CostPiasters")
+                    .HasColumnType("INTEGER");
+
+                b.Property<DateTime>("CreatedAt")
+                    .HasColumnType("TEXT");
+
+                b.Property<DateOnly>("ExpiryDate")
+                    .HasColumnType("TEXT");
+
+                b.Property<int>("FirstSequence")
+                    .HasColumnType("INTEGER");
+
+                b.Property<string>("LotNumber")
+                    .IsRequired()
+                    .HasColumnType("TEXT");
+
+                b.Property<int>("PiecesPerBox")
+                    .HasColumnType("INTEGER");
+
+                b.Property<string>("ProductName")
+                    .IsRequired()
+                    .HasColumnType("TEXT");
+
+                b.Property<DateOnly>("ProductionDate")
+                    .HasColumnType("TEXT");
+
+                b.HasKey("Id");
+
+                b.HasIndex("CodePrefix");
+
+                b.ToTable("LabelJobs");
+            });
+
+        modelBuilder.Entity("ExpiryTracker.Api.Models.Product", b =>
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("INTEGER");
+
+                b.Property<string>("Barcode")
+                    .IsRequired()
+                    .HasColumnType("TEXT");
+
+                b.Property<string>("Category")
+                    .IsRequired()
+                    .HasColumnType("TEXT");
+
+                b.Property<string>("Name")
+                    .IsRequired()
+                    .HasColumnType("TEXT");
+
+                b.Property<long?>("SellingPricePiasters")
+                    .HasColumnType("INTEGER");
+
+                b.HasKey("Id");
+
+                b.HasIndex("Barcode")
+                    .IsUnique();
+
+                b.ToTable("Products");
+            });
+
+        modelBuilder.Entity("ExpiryTracker.Api.Models.StockMovement", b =>
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("INTEGER");
+
+                b.Property<DateTime>("At")
+                    .HasColumnType("TEXT");
+
+                b.Property<int>("CartonId")
+                    .HasColumnType("INTEGER");
+
+                b.Property<int>("Quantity")
+                    .HasColumnType("INTEGER");
+
+                b.Property<string>("ReceiptNumber")
+                    .HasColumnType("TEXT");
+
+                b.Property<string>("Type")
+                    .IsRequired()
+                    .HasColumnType("TEXT");
+
+                b.Property<string>("WasteReason")
+                    .HasColumnType("TEXT");
+
+                b.HasKey("Id");
+
+                b.HasIndex("CartonId");
+
+                b.ToTable("StockMovements");
+            });
+
+        modelBuilder.Entity("ExpiryTracker.Api.Models.Carton", b =>
+            {
+                b.HasOne("ExpiryTracker.Api.Models.Product", "Product")
+                    .WithMany("Cartons")
+                    .HasForeignKey("ProductId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
+
+                b.Navigation("Product");
+            });
+
+        modelBuilder.Entity("ExpiryTracker.Api.Models.StockMovement", b =>
+            {
+                b.HasOne("ExpiryTracker.Api.Models.Carton", "Carton")
+                    .WithMany("Movements")
+                    .HasForeignKey("CartonId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
+
+                b.Navigation("Carton");
+            });
+
+        modelBuilder.Entity("ExpiryTracker.Api.Models.Carton", b =>
+            {
+                b.Navigation("Movements");
+            });
+
+        modelBuilder.Entity("ExpiryTracker.Api.Models.Product", b =>
+            {
+                b.Navigation("Cartons");
             });
 #pragma warning restore 612, 618
     }

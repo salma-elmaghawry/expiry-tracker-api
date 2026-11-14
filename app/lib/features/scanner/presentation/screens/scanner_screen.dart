@@ -3,10 +3,10 @@ import 'package:expiry_tracker/core/helpers/spacing.dart';
 import 'package:expiry_tracker/core/theme/app_colors.dart';
 import 'package:expiry_tracker/core/utils/app_text_styles.dart';
 import 'package:expiry_tracker/features/scanner/presentation/widgets/scanner_message.dart';
+import 'package:expiry_tracker/features/scanner/presentation/widgets/scan_line.dart';
 import 'package:expiry_tracker/features/scanner/presentation/widgets/scanner_overlay.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
@@ -113,7 +113,7 @@ class _ScannerScreenState extends State<ScannerScreen> {
                             ? AppColors.primaryDark
                             : Colors.white,
                       ),
-                      if (!_found) _scanLine(frame),
+                      if (!_found) ScanLine(frame: frame),
                       _instructions(frame),
                     ],
                     _header(state, showTorch: !hasError),
@@ -174,38 +174,6 @@ class _ScannerScreenState extends State<ScannerScreen> {
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  // The green line that moves up and down inside the frame.
-  Widget _scanLine(Rect frame) {
-    final travel = frame.height / 2 - 16;
-
-    return Positioned(
-      left: frame.left + 16,
-      width: frame.width - 32,
-      top: frame.center.dy - 1,
-      child: IgnorePointer(
-        child:
-            Container(
-                  height: 2,
-                  decoration: const BoxDecoration(
-                    color: AppColors.primaryDark,
-                    boxShadow: [
-                      BoxShadow(color: AppColors.primaryDark, blurRadius: 12),
-                    ],
-                  ),
-                )
-                .animate(
-                  onPlay: (controller) => controller.repeat(reverse: true),
-                )
-                .moveY(
-                  begin: -travel,
-                  end: travel,
-                  duration: 1600.ms,
-                  curve: Curves.easeInOut,
-                ),
       ),
     );
   }

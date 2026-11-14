@@ -82,3 +82,112 @@ GET {{ExpiryTracker.Api_HostAddress}}/api/reports/losses
 POST {{ExpiryTracker.Api_HostAddress}}/api/demo/seed
 
 ###
+
+# ---------- Cartons (new QR flow) ----------
+# qrText is the raw text inside the QR, so its quotes are escaped (\") inside this JSON body.
+
+### 1) New product, no selling price: 400 "New product: enter the selling price of one piece."
+POST {{ExpiryTracker.Api_HostAddress}}/api/cartons/scan
+Content-Type: application/json
+
+{
+  "qrText": "{\"v\":1,\"id\":\"test-carton-001\",\"barcode\":\"6221234567890\",\"name\":\"Chocolate biscuit\",\"category\":\"Snacks\",\"boxes\":12,\"perBox\":10,\"lot\":\"L-2611-A\",\"mfg\":\"2026-11-01\",\"exp\":\"2027-05-01\",\"cost\":40000}"
+}
+
+### 2) Same carton WITH a selling price (5.50 EGP per piece): 201, product + carton created, 120 pieces
+POST {{ExpiryTracker.Api_HostAddress}}/api/cartons/scan
+Content-Type: application/json
+
+{
+  "qrText": "{\"v\":1,\"id\":\"test-carton-001\",\"barcode\":\"6221234567890\",\"name\":\"Chocolate biscuit\",\"category\":\"Snacks\",\"boxes\":12,\"perBox\":10,\"lot\":\"L-2611-A\",\"mfg\":\"2026-11-01\",\"exp\":\"2027-05-01\",\"cost\":40000}",
+  "sellingPricePiasters": 550
+}
+
+### 3) Scan the same carton again: 409 with receivedAt
+POST {{ExpiryTracker.Api_HostAddress}}/api/cartons/scan
+Content-Type: application/json
+
+{
+  "qrText": "{\"v\":1,\"id\":\"test-carton-001\",\"barcode\":\"6221234567890\",\"name\":\"Chocolate biscuit\",\"category\":\"Snacks\",\"boxes\":12,\"perBox\":10,\"lot\":\"L-2611-A\",\"mfg\":\"2026-11-01\",\"exp\":\"2027-05-01\",\"cost\":40000}",
+  "sellingPricePiasters": 550
+}
+
+### 4) Another carton of the SAME product, no price needed now: 201, reuses the product
+POST {{ExpiryTracker.Api_HostAddress}}/api/cartons/scan
+Content-Type: application/json
+
+{
+  "qrText": "{\"v\":1,\"id\":\"test-carton-002\",\"barcode\":\"6221234567890\",\"name\":\"Chocolate biscuit\",\"category\":\"Snacks\",\"boxes\":12,\"perBox\":10,\"lot\":\"L-2611-B\",\"mfg\":\"2026-11-05\",\"exp\":\"2027-05-05\",\"cost\":40000}"
+}
+
+### 5) Not our QR (a website link): 400 "This QR is not an Expiry Tracker carton label."
+POST {{ExpiryTracker.Api_HostAddress}}/api/cartons/scan
+Content-Type: application/json
+
+{
+  "qrText": "https://example.com"
+}
+
+### 6) Our format but wrong values (expiry before production, 0 boxes): 400 with field errors
+POST {{ExpiryTracker.Api_HostAddress}}/api/cartons/scan
+Content-Type: application/json
+
+{
+  "qrText": "{\"v\":1,\"id\":\"test-carton-003\",\"barcode\":\"6221234567890\",\"name\":\"Chocolate biscuit\",\"category\":\"Snacks\",\"boxes\":0,\"perBox\":10,\"lot\":\"L-2611-C\",\"mfg\":\"2026-11-01\",\"exp\":\"2026-10-01\",\"cost\":40000}"
+}
+
+###
+
+# ---------- Carton preview (reads the label, saves NOTHING) ----------
+
+### 7) Preview a carton we already received: 200, alreadyReceivedAt is set, needsSellingPrice = false
+POST {{ExpiryTracker.Api_HostAddress}}/api/cartons/scan/preview
+Content-Type: application/json
+
+{
+  "qrText": "{\"v\":1,\"id\":\"test-carton-001\",\"barcode\":\"6221234567890\",\"name\":\"Chocolate biscuit\",\"category\":\"Snacks\",\"boxes\":12,\"perBox\":10,\"lot\":\"L-2611-A\",\"mfg\":\"2026-11-01\",\"exp\":\"2027-05-01\",\"cost\":40000}"
+}
+
+### 8) Preview a NEW product's carton: 200, needsSellingPrice = true, alreadyReceivedAt = null
+POST {{ExpiryTracker.Api_HostAddress}}/api/cartons/scan/preview
+Content-Type: application/json
+
+{
+  "qrText": "{\"v\":1,\"id\":\"test-carton-101\",\"barcode\":\"6229876543210\",\"name\":\"Vanilla wafer\",\"category\":\"Snacks\",\"boxes\":24,\"perBox\":6,\"lot\":\"W-2611-A\",\"mfg\":\"2026-11-03\",\"exp\":\"2026-11-20\",\"cost\":36000}"
+}
+
+### 9) Preview a bad QR: 400, same message as scan
+POST {{ExpiryTracker.Api_HostAddress}}/api/cartons/scan/preview
+Content-Type: application/json
+
+{
+  "qrText": "https://example.com"
+}
+
+###
+
+# ---------- Factory labels (signed QRs) ----------
+# Since labels are signed, the hand-written qrText samples above now return 400
+# "not a carton label". Make real ones here, then copy a qrText into a scan request.
+
+### Create 3 labels: 201 with labels[].qrText (each one signed, ids CT-ED261107-0001..0003)
+POST {{ExpiryTracker.Api_HostAddress}}/api/labels/jobs
+Content-Type: application/json
+
+{
+  "productName": "Edita Molto Croissant",
+  "barcode": "6223001360210",
+  "category": "Snacks",
+  "boxesCount": 12,
+  "piecesPerBox": 10,
+  "lotNumber": "ED-2611-07",
+  "productionDate": "2026-11-01",
+  "expiryDate": "2026-11-14",
+  "costPiasters": 84000,
+  "cartonCount": 3
+}
+
+### Load a job again (the print preview page does this): 200, same ids and signatures
+GET {{ExpiryTracker.Api_HostAddress}}/api/labels/jobs/1
+
+###
